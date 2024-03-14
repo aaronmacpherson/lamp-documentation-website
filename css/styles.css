@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Ubuntu";
+    background-color: #1b1b1b;
+    color: #FFFFFF;
+    overflow: hidden;
+    height: 100vh;
+}
+
+main {
+    overflow-y: scroll;
+    margin: 1rem;
+}
+
+h1, h2, p {
+    padding: 0.5rem;
+}
+
+ol {
+    margin-left: 5rem;
+}
+
+li {
+    padding-top: 1rem;
+}
+
+pre {
+    background-color: #343434;
+    border-left: 2px solid #858585;
+    border-radius: 3px;
+    padding: 1rem;
+    margin: 1rem 1rem 0 1rem;
+}
+
+aside {
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border-right: 2px solid #858585;
+    padding: 0.5rem;
+
+    @media screen and (max-width: 800px) {
+        display: none;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: #cdcdcd;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+.g-header {
+    display: flex;
+    flex-direction: row;
+    background-color: #313131;
+    padding: 0.5em;
+    font-size: 1.5rem;
+    color: #cdcdcd;
+    border-top: 2px solid #858585;
+    border-bottom: 2px solid #858585;
+}
+
+#p-main {
+    display: flex;
+    height: calc(100% - 60px);
+}
+
+#p-main .side-nav ul {
+    list-style-type: none;
+}
+
+#p-main .side-nav li {
+    padding: 1rem;
+}
+
+#p-main .side-nav li li {
+    padding: 0.5rem;
+}
+
+#p-main img {
+    display: block;
+    max-width: 70%;
+    max-height: 70%;
+    margin-top: 0.5em;
+}

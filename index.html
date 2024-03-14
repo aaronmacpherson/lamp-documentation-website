@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>LAMP Documentation</title>
+		<link rel="stylesheet" href="./css/styles.css">
+    </head>
+    <body class="g-base">
+        <header class="g-header">
+            <div class="heading">LAMP Documentation</div>
+        </header>
+        <div id="p-main">
+            <aside class="side-nav">
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#apache">How to install Apache</a></li>
+                    <li><a href="#php">How to install PHP</a></li>
+                    <li>
+                        <a href="#mysql">How to install MySQL</a>
+                        <ul>
+                            <li><a href="#database">Adding a new database to MySQL</a></li>
+                            <li><a href="#user">Adding a new user to MySQL</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#vhost">How to configure a vhost in Apache</a></li>
+                    <li><a href="#stack">How to test your stack is working</a></li>
+
+                </ul>
+            </aside>
+            <main>
+                <div id="s-introduction">
+                    <h1 id="introduction">Introduction</h1>
+                    <p>
+                        LAMP (Linux, Apache, MySQL, PHP) is an open source software stack that is used for many of the modern webs most popular applications. Due to its continued popularity it is important as a web developer to understand how LAMP works and how it is setup. The documentation provided on this website will provide a step-by-step guide on how to get LAMP running on a local development environment.
+                    </p>
+                </div>
+                <div id="s-install-apache">
+                    <h1 id="apache">How to install Apache</h1>
+                    <p>
+                        Apache Web Server is a free, open source, and cross platform web server software package that is used to host some of the webs most popular sites.
+                    </p>
+                    <p>
+                        This section of the guide will assume that you are running the Ubuntu operating system either locally or through WSL (Windows Subsystem for Linux).
+                    </p>
+                    <ol>
+                        <li>
+                            Open up a terminal window
+                        </li>
+                        <li>
+                            Type in the following command to ensure your packages are up-to-date:
+                            <pre><code>sudo apt update</code></pre>
+                        </li>
+                        <li>
+                            Type in the follow command to install the Apache package:
+                            <pre><code>sudo apt install apache2</code></pre>
+                        </li>
+                        <li>
+                            After installation is finished Ubuntu will start the web server automatically. You can confirm this by navigating to your localhost. You will know it was setup properly if you see the default apache welcome page.
+                            <img src="./images/apache_welcome.png" alt="apache welcome page">
+                        </li>
+                    </ol>
+                </div>
+                <div id="s-install-php">
+                    <h1 id="php">How to install PHP</h1>
+                    <p>
+                        PHP (PHP: Hypertext Preprocessor) is a general purpose scripting language that is commonly used to display dynamic content on a web page. It does this by retrieving information from a database hosted on a web server.
+                    </p>
+                    <p>
+                        To get PHP running in our stack we will need to follow these steps:
+                    </p>
+                    <ol>
+                        <li>
+                            In your terminal type the following command to add the latest repository of PHP to your packages:
+                            <pre><code>sudo add-apt-repository ppa:ondrej/php</code></pre>
+                        </li>
+                        <li>
+                            Update your packages again:
+                            <pre><code>sudo apt update</code></pre>
+                        </li>
+                        <li>
+                            Install PHP 8.2:
+                            <pre><code>sudo apt install php8.2 -y</code></pre>
+                        </li>
+                        <li>
+                            Install the PHP Apache module:
+                            <pre><code>sudo apt install libapache2-mod-php8.2 -y</code></pre>
+                        </li>
+                        <li>
+                            Install the PHP MySQL module:
+                            <pre><code>sudo apt install php8.2-mysql -y</code></pre>
+                        </li>
+                        <li>
+                            Restart Apache to finish the setup of these modules:
+                            <pre><code>sudo systemctl restart apache2</code></pre>
+                        </li>
+                        <li>
+                            Confirm PHP was successfully installed by checking the version:
+                            <pre><code>php --version</code></pre>
+                            <img src="./images/php_version.png" alt="terminal window showing php version">
+                        </li>
+                    </ol>
+                </div>
+                <div id="s-install-mysql">
+                    <h1 id="mysql">How to install MySQL</h1>
+                    <p>
+                        MySQL is an open-source RDBMS (Relational Database Management System) that uses the SQL (Structured Query Language) programming language. This is used to organize, retrieve, and store information for web pages.
+                    </p>
+                    <p>
+                        Follow these commands to install MySQL:
+                    </p>
+                    <ol>
+                        <li>
+                            Using your terminal type in the following command:
+                            <pre><code>sudo apt install mysql-server -y</code></pre>
+                        </li>
+                        <li>
+                            Make sure it installed correctly by checking the version number:
+                            <pre><code>mysql -V</code></pre>
+                            <img src="./images/mysql_version.png" alt="terminal window showing mysql version">
+                        </li>
+                    </ol>
+
+                    <h2 id="database">Adding a new database to MySQL</h2>
+                    <ol>
+                        <li>
+                            Enter mysql using the terminal environment:
+                            <pre><code>sudo mysql</code></pre>
+                        </li>
+                        <li>
+                            Type the following SQL command to create a new database:
+                            <pre><code>CREATE DATABASE testDB;</code></pre>
+                        </li>
+                    </ol>
+                    <h2 id="user">Adding a new user to MySQL</h2>
+                    <ol>
+                        <li>
+                            Use the following SQL command to create a new user:
+                            <pre><code>CREATE USER 'test'@'%' IDENTIFIED WITH mysql_native_password BY 'secret';</code></pre>
+                        </li>
+                        <li>
+                            Grant the new user access to the database created in the previous section:
+                            <pre><code>GRANT ALL ON testDB.* to 'test'@'%';</code></pre>
+                        </li>
+                        <li>
+                            Exit mysql:
+                            <pre><code>exit</code></pre>
+                        </li>
+                    </ol>
+                </div>
+                <div id="s-configure-vhost">
+                    <h1 id="vhost">How to configure a vhost in Apache</h1>
+                    <p>
+                        Vhosts (Virtual Hosts) are a way to connect a website to multiple domain names on a single web server. The scope of the guide will only cover how to do this through localhost.
+                    </p>
+                    <p>
+                        To create a new vhost we will need to execute the commands below:
+                    </p>
+                    <ol>
+                        <li>
+                            Navigate to the sites-available directory:
+                            <pre><code>cd /etc/apache2/sites-available</code></pre>
+                        </li>
+                        <li>
+                            Create a new vhost file using the default configuration:
+                            <pre><code>sudo cp 000-default.conf example.test.conf</code></pre>
+                        </li>
+                        <li>
+                            Open the new conf file we just created:
+                            <pre><code>sudo nano example.test.conf</code></pre>
+                        </li>
+                        <li>
+                            Add the ServerName directive below the commented lines within the VirtualHost:
+                            <pre><code>ServerName example.test</code></pre>
+                        </li>
+                        <li>
+                            Add the ServerAlias directive below the ServerName directive:
+                            <pre><code>ServerAlias www.example.test</code></pre>
+                        </li>
+                        <li>
+                            Edit the document root so that it points to /var/www/example.test.
+                        </li>
+                        <li>
+                            Your vhost should now look like the below image:
+                            <img src="./images/example_vhost.png" alt="terminal window showing vhost file">
+                        </li>
+                        <li>
+                            Save your changes with CTRL + O
+                        </li>
+                        <li>
+                            Activate the new vhost:
+                            <pre><code>sudo a2ensite example.test.conf</code></pre>
+                        </li>
+                        <li>
+                            Check for configuration errors:
+                            <pre><code>sudo apache2ctl configtest</code></pre>
+                        </li>
+                        <li>
+                            Reload apache to apply our changes:
+                            <pre><code>sudo systemctl reload apache2</code></pre>
+                        </li>
+                        <li>
+                            Finally we will need to add some new host entries to our host file. Navigate to C:\Windows\System32\drivers\etc, open the host file using your preferred text editor, and add the following:
+                            <pre><code>127.0.0.1	example.test
+127.0.0.1	www.example.test
+::1		example.test
+::1		www.example.test</code></pre>
+                        </li>
+                        <li>
+                            Save the changes
+                        </li>
+                    </ol>
+                </div>
+                <div id="s-test-stack">
+                    <h1 id="stack">How to test your stack is working</h1>
+                    <p>
+                        With our LAMP stack installed and fully configured we can now test it to make sure everything is working correctly. This section will assume you are using Visual Studio Code with the WSL extension.
+                    </p>
+                    <ol>
+                        <li>
+                            Open up VSCode and connect to WSL by clicking the button at the bottom lefthand corner
+                            <img src="./images/remote_window.png" alt="visual studio code remote window button">
+                        </li>
+                        <li>
+                            Select Connect to WSL from the dropdown
+                        </li>
+                        <li>
+                            Click Open Folder and navigate to /var/www/
+                        </li>
+                        <li>
+                            Right click and create a new folder named example.test
+                        </li>
+                        <li>
+                            Right click the new folder and create a new file called index.php. Your file structure should look like the below image:
+                            <img src="./images/vs_files.png" alt="visual studio code file structure">
+                        </li>
+                        <li>
+                            Add the following php code to the index.php file:
+                            <pre><code>&lt;?php
+$mysqli = new mysqli("localhost", "test", "secret", "testDB");
+
+if ($mysqli->connect_errno) {  
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;  
+    exit();
+}
+
+echo "Connected successfully to MySQL";
+$mysqli->close();</code></pre>
+                        </li>
+                        <li>
+                            Save the changes to the index.php file
+                        </li>
+                        <li>
+                            Lastly, navigate to example.test or www.example.test. If everything is configured correctly the following page will display:
+                            <img src="./images/example_page.png" alt="page showing mysql connection successful message">
+                        </li>
+                    </ol>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
